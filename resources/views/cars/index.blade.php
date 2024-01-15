@@ -27,14 +27,23 @@
                 <td>
                     <a href="{{ route('cars.show', $car->id) }}" class="btn btn-info btn-sm">View</a>
                     <a href="{{ route('cars.edit', $car->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('cars.destroy', $car->id) }}" method="post" class="d-inline">
+                    <form id="deleteForm{{ $car->id }}" action="{{ route('cars.destroy', $car->id) }}" method="post" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $car->id }})">Delete</button>
                     </form>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+    <script>
+        function confirmDelete(carId) {
+            if (confirm('Are you sure you want to delete this car?')) {
+                var form = document.getElementById('deleteForm' + carId);
+                form.submit();
+            }
+        }
+    </script>
+
 @endsection
