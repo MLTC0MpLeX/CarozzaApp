@@ -41,5 +41,37 @@ class CarController extends Controller
         return redirect()->route('cars.index')->with('success', 'Car added successfully!');
     }
 
+public function show(Car $car)
+{
+    return view('cars.show', compact('car'));
+}
+
+    public function edit(Car $car)
+    {
+        $manufacturers = Manufacturer::all();
+        return view('cars.edit', compact('car', 'manufacturers'));
+    }
+
+    public function update(Request $request, Car $car)
+    {
+        $request->validate([
+            'model' => 'required|string',
+            'year' => 'required|string',
+            'salesperson_email' => 'required|email',
+            'manufacturer_id' => ['required', Rule::exists('manufacturers', 'id')],
+        ]);
+
+        $car->update($request->all());
+
+        return redirect()->route('cars.index')->with('success', 'Car updated successfully!');
+    }
+
+
+    public function destroy(Car $car)
+    {
+        $car->delete();
+        return redirect()->route('cars.index')->with('success', 'Car deleted successfully!');
+    }
+
 
 }
