@@ -3,7 +3,8 @@
 @section('content')
     <h2>Cars</h2>
 
-    <!-- Display Cars Table -->
+    <a href="{{ route('cars.create') }}" class="btn btn-success mb-3">Add New Car</a>
+
     <table class="table">
         <thead>
         <tr>
@@ -12,7 +13,7 @@
             <th>Year</th>
             <th>Salesperson Email</th>
             <th>Manufacturer</th>
-            <!-- Add more columns if needed -->
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -23,7 +24,15 @@
                 <td>{{ $car->year }}</td>
                 <td>{{ $car->salesperson_email }}</td>
                 <td>{{ $car->manufacturer->name }}</td>
-                <!-- Add more cells if needed -->
+                <td>
+                    <a href="{{ route('cars.show', $car->id) }}" class="btn btn-info btn-sm">View</a>
+                    <a href="{{ route('cars.edit', $car->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('cars.destroy', $car->id) }}" method="post" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
         </tbody>
